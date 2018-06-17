@@ -68,7 +68,7 @@ main {
 
 }
 
-footer {
+.app-footer {
     position: absolute;
     bottom: -5em;
     left: 0;
