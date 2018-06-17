@@ -43,6 +43,7 @@ export class MirrorCircular extends Instrument {
             ];
         };
 
+        // Calculate all the points of the circle, for t in (0,1)
         for (let t = 0.0; ; t += tstep) {
             if (t >= 1) t = 1; // Make sure we don't go off bounds
 
@@ -56,6 +57,7 @@ export class MirrorCircular extends Instrument {
             if (t >= 1) break; // t == 1 means we have finished
         }
 
+        // Calculate the points of the second circle
         for (let t = 0.0; ; t += tstep) {
             if (t >= 1) t = 1;
 

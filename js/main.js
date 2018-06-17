@@ -1,4 +1,4 @@
-console.log("'ello");
+console.log("Welcome to optics1-raytracer");
 
 import dat from 'dat.gui';
 
@@ -6,6 +6,7 @@ import { drawLegacy } from './legacy.js';
 import { Torch } from './torch.js';
 import { Mirror } from './mirror.js';
 import { MirrorCircular } from './mirrorCircular.js';
+import { LensCircular } from './lensCircular.js';
 
 const gui = new dat.GUI();
 
@@ -17,7 +18,7 @@ function addObject(object)
     let folder = gui.addFolder(object.name);
     object.exportedProperties.forEach(function(prop) {
         if (prop === 'x' || prop === 'y') {
-            folder.add(object, prop, 0, 300).onChange(draw);
+            folder.add(object, prop, 0, conf.canvasSize).onChange(draw);
         } else if (prop === 'rot') {
             folder.add(object, prop, 0, 360).onChange(draw);
         } else if (prop === 'intensity') {
@@ -28,6 +29,8 @@ function addObject(object)
             folder.add(object, prop, 0, 200).onChange(draw);
         } else if (prop === 'radius') {
             folder.add(object, prop, 0, 200).onChange(draw);
+        } else if (prop === 'n') {
+            folder.add(object, prop, 0.9, 5.0).onChange(draw);
         }
     });
     folder.open();
@@ -37,11 +40,14 @@ function addObject(object)
 
 class Config {
     constructor() {
+        this.canvasSize = 500;
+
         this.debug = true;
         this.resolution = 5.0;
-
         this.stepsLo = 4.0;
         this.stepsHi = 6.0;
+
+        this.n = 1.0;
 
         this.redraw = function() { draw() };
 
@@ -52,6 +58,7 @@ class Config {
 
         this.addMirror = function() { addObject(new Mirror()); };
         this.addCircularMirror = function() { addObject(new MirrorCircular()); };
+        this.addCircularLens = function() { addObject(new LensCircular()); };
     }
 }
 let conf = new Config();
@@ -94,13 +101,17 @@ torchImg.addEventListener('load', draw, false);
 // gui.add(conf, 'mirrorX', 0, 500).onChange(draw);
 // gui.add(conf, 'mirrorY', 0, 500).onChange(draw);
 // gui.add(conf, 'mirrorRot', -180, 180).onChange(draw);
-gui.add(conf, 'debug').onChange(draw);
-gui.add(conf, 'resolution', 0.0, 10.0).onChange(draw);
-gui.add(conf, 'stepsLo', 0.0, 10.0).onChange(draw);
-gui.add(conf, 'stepsHi', 0.0, 20.0).onChange(draw);
+gui.add(conf, 'n', 1.0, 2.0).onChange(draw);
+let folder = gui.addFolder('Configuration');
+folder.add(conf, 'debug').onChange(draw);
+folder.add(conf, 'resolution', 0.0, 10.0).onChange(draw);
+folder.add(conf, 'stepsLo', 0.0, 10.0).onChange(draw);
+folder.open(gui);
+folder.add(conf, 'stepsHi', 0.0, 20.0).onChange(draw);
 gui.add(conf, 'addTorch');
 gui.add(conf, 'addMirror');
 gui.add(conf, 'addCircularMirror');
+gui.add(conf, 'addCircularLens');
 gui.add(conf, 'redraw');
-gui.remember(conf);
+// gui.remember(conf);
 

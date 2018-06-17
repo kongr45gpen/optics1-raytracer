@@ -1,4 +1,4 @@
-console.log("amazing");
+console.log("Welcome to optics1-raytracer");
 
 export function drawLegacy(ctx, conf, torchImg) {
     ctx.fillStyle = 'rgb(200, 0, 0)';
