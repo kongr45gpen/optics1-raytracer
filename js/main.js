@@ -5,6 +5,7 @@ import dat from 'dat.gui';
 import { drawLegacy } from './legacy.js';
 import { Torch } from './torch.js';
 import { Mirror } from './mirror.js';
+import { MirrorCircular } from './mirrorCircular.js';
 
 const gui = new dat.GUI();
 
@@ -24,6 +25,8 @@ function addObject(object)
         } else if (prop === 'wavelength') {
             folder.add(object, prop, 380, 780).onChange(draw);
         } else if (prop === 'size') {
+            folder.add(object, prop, 0, 200).onChange(draw);
+        } else if (prop === 'radius') {
             folder.add(object, prop, 0, 200).onChange(draw);
         }
     });
@@ -48,6 +51,7 @@ class Config {
         };
 
         this.addMirror = function() { addObject(new Mirror()); };
+        this.addCircularMirror = function() { addObject(new MirrorCircular()); };
     }
 }
 let conf = new Config();
@@ -96,6 +100,7 @@ gui.add(conf, 'stepsLo', 0.0, 10.0).onChange(draw);
 gui.add(conf, 'stepsHi', 0.0, 20.0).onChange(draw);
 gui.add(conf, 'addTorch');
 gui.add(conf, 'addMirror');
+gui.add(conf, 'addCircularMirror');
 gui.add(conf, 'redraw');
 gui.remember(conf);
 

@@ -21,7 +21,7 @@ export class Ray {
     _findCollisions(x, y, rot, object) {
         if (object.points.length <= 1) throw new Error("An instrument needs at least 2 points.");
 
-        const threshold = Math.pow(1 / parseFloat(conf.stepsHi), 2);
+        const threshold = Math.pow(2 / parseFloat(conf.stepsHi), 2);
 
         for (let i = 0; i < object.points.length; i++) {
             let point = object.points[i];
@@ -82,7 +82,7 @@ export class Ray {
                 objects.forEach(function (object) {
                     if (!object.affectsLight) return; // We don't care about torches
 
-                    if (Math.pow(x - object.x, 2) + Math.pow(y - object.y, 2) <= object.maxDistance + 100.0) {
+                    if (Math.pow(x - object.x, 2) + Math.pow(y - object.y, 2) <= object.maxDistance + 10.0) {
                         // We are close!
                         closeObjects.push(object);
 
@@ -95,7 +95,7 @@ export class Ray {
 
                             // Prevent a second collision from occuring, since we are still very
                             // close to the specified object
-                            cooldown += 10;
+                            cooldown += 3;
                         }
                     }
                 });

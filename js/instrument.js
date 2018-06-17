@@ -41,6 +41,12 @@ export class Instrument {
                 // ctx.strokeStyle = '#003300';
                 // ctx.stroke();
             });
+
+            // Center point
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, 2, 0, 2 * Math.PI, false);
+            ctx.fillStyle = 'rgb(235,255,255)';
+            ctx.fill();
         }
     }
 
