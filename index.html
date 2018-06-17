@@ -1,33 +1,113 @@
 <!doctype html>
 <html class="no-js" lang="">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <link rel="stylesheet" href="css/normalize.min.css">
-        <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/normalize.min.css">
+    <link rel="stylesheet" href="css/buttons.css">
+    <link rel="stylesheet" href="css/micromodal.css">
+    <link rel="stylesheet" href="css/main.css">
 
-        <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
-    </head>
-    <body>
-        <!--[if lt IE 8]>
-            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
+    <script src="js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+</head>
+<body>
+<!--[if lt IE 8]>
+<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a
+        href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+<![endif]-->
 
-        <button id="export">Export</button>
+<aside class="presets">
+    <p>
+        <button class="ui-button ui-button-border ui-button-caution ui-button-rounded ui-button-small"
+                id="expsort">Export
+        </button>
+        <button class="ui-button ui-button-border ui-button-caution ui-button-rounded ui-button-small"
+                id="expsort">Export
+        </button>
+    </p>
 
-        <main>
-            <canvas id="app" width="900" height="800">Your browser does not support this application.</canvas>
-        </main>
 
-        <footer>
-            Kanavouras Konstantinos 2018,
-            <a href="https://github.com/kongr45gpen/optics1-raytracer">https://github.com/kongr45gpen/optics1-raytracer</a>
-        </footer>
+    <p>
+        <button class="ui-button ui-button-border ui-button-highlight ui-button-rounded" id="import">
+            Import
+        </button>
+        <button class="ui-button ui-button-border ui-button-highlight ui-button-rounded" id="export">
+            Export
+        </button>
+    </p>
+</aside>
 
-        <script src="dist/bundle.js"></script>
-    </body>
+<main>
+    <canvas id="app" width="900" height="800">Your browser does not support this application.
+    </canvas>
+</main>
+
+<footer>
+    Kanavouras Konstantinos 2018,
+    <a href="https://github.com/kongr45gpen/optics1-raytracer">https://github.com/kongr45gpen/optics1-raytracer</a>
+</footer>
+
+<!-- Modal for the exported code -->
+<!-- Source: https://gist.github.com/ghosh/4f94cf497d7090359a5c9f81caf60699 -->
+<div class="modal micromodal-slide" id="modal-1">
+    <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+        <div class="modal__container" role="dialog" aria-modal="true"
+             aria-labelledby="modal-1-title">
+            <header class="modal__header">
+                <h2 class="modal__title" id="modal-1-title">
+                    Exported optical system
+                </h2>
+                <button class="modal__close" aria-label="Close modal"
+                        data-micromodal-close></button>
+            </header>
+            <main class="modal__content" id="modal-1-content">
+                        <pre id="exported-json">
+
+                        </pre>
+            </main>
+            <footer class="modal__footer">
+                <button class="modal__btn" data-micromodal-close
+                        aria-label="Close this dialog window">Close
+                </button>
+            </footer>
+        </div>
+    </div>
+</div>
+<div class="modal micromodal-slide" id="modal-2">
+    <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+        <div class="modal__container" role="dialog" aria-modal="true"
+             aria-labelledby="modal-2-title">
+            <form id="import-form" action="#" autocomplete="off">
+                <header class="modal__header">
+                    <h2 class="modal__title" id="modal-2-title">
+                        Import optical system
+                    </h2>
+                    <button class="modal__close" aria-label="Close modal"
+                            data-micromodal-close></button>
+                </header>
+                <main class="modal__content" id="modal-2-content">
+                    <p>
+                        <b>Warning!</b> Importing a new optical system will delete your current
+                        system.
+                    </p>
+                    <textarea id="import-json" title="import-json"></textarea>
+                </main>
+                <footer class="modal__footer">
+                    <button class="modal__btn modal__btn-primary" type="submit">Import</button>
+                    <button class="modal__btn" data-micromodal-close
+                            aria-label="Close this dialog window">Cancel
+                    </button>
+                </footer>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script src="dist/bundle.js"></script>
+</body>
 </html>

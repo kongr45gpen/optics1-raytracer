@@ -1,6 +1,7 @@
 console.log("Welcome to optics1-raytracer");
 
 import dat from 'dat.gui';
+import MicroModal from 'micromodal';
 
 import { drawLegacy } from './legacy.js';
 import { Torch } from './torch.js';
@@ -61,8 +62,8 @@ class Config {
         this.canvasWidth = canvas.scrollWidth;
         this.canvasHeight = canvas.scrollHeight;
 
-        this.debug = true;
-        this.resolution = 5.0;
+        this.debug = false;
+        this.resolution = 4.0;
         this.stepsLo = 1.0;
         this.stepsHi = 5.0;
         this.maxSteps = 20000;
@@ -122,9 +123,66 @@ gui.add(conf, 'addCircularLens');
 gui.add(conf, 'addConcaveLens');
 gui.add(conf, 'redraw');
 
+// Reset function to remove all instruments
+function reset()
+{
+    objects.forEach(function(object) {
+        // This might be dangerous
+        object.remove();
+    })
+}
+
 // Export functions
 document.getElementById('export').addEventListener('click', function() {
-   console.log(JSON.stringify(objects.map(function(object) {
+   let json = JSON.stringify(objects.map(function(object) {
        return object.export();
-   })));
+   }), null, 1).replace(/\n/g, ' ');
+
+   document.getElementById('exported-json').innerHTML = json;
+
+   MicroModal.show('modal-1');
 });
+
+// Import functions
+document.getElementById('import').addEventListener('click', function() {
+    MicroModal.show('modal-2');
+});
+
+document.getElementById('import-form').addEventListener('submit', function() {
+    MicroModal.close('modal-2');
+    console.log(this.elements['import-json'].value);
+    importData(JSON.parse(this.elements['import-json'].value));
+});
+
+function importData(data) {
+    reset();
+
+    data.forEach(function(datum) {
+        let object;
+        switch (datum.type) {
+            case "Mirror":
+                object = new Mirror();
+                break;
+            case "MirrorCircular":
+                object = new MirrorCircular();
+                break;
+            case "LensCircular":
+                object = new LensCircular();
+                break;
+            case "LensConcave":
+                object = new LensConcave();
+                break;
+            case "Torch":
+                object = new Torch();
+                break;
+        }
+
+        // Copy properties
+        Object.keys(datum).forEach(function(property) {
+            if (property === 'id') return; // Don't copy ID, use the already existing one
+           object[property] = datum[property];
+        });
+
+        addObject(object);
+    });
+}

@@ -95,7 +95,27 @@ canvas {
     margin-top: 10vh;
 
     border: 1px solid gray;
-    box-shadow: 0 0 10px 1px rgba(255,255,255,0.2);
+    box-shadow: 0 0 10px 1px rgba(255, 255, 255, 0.2);
+}
+
+
+pre {
+    white-space: pre-wrap;
+}
+
+textarea {
+    white-space: pre-wrap;
+    font-family: monospace;
+
+    width: 100%;
+}
+
+.presets {
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    margin: 1em;
 }
 
 /* ==========================================================================
