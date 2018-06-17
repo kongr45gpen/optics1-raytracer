@@ -21,6 +21,10 @@ export class Torch extends Instrument {
         ];
     }
 
+    prepareRayTracingPoints() {
+        this.maxVerticalDistance = 25;
+    }
+
     draw(ctx) {
         super.draw(ctx); // Call parent class function
 

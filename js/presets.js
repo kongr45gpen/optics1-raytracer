@@ -149,7 +149,8 @@ presets['Dispersion'] = [
         id: 2,
         x: 50,
         y: 168,
-        rot: -10,
+        rot: -10.02, // this slight difference in rotation accounts for differences in the incident angle
+                     // since the torches are not placed directly behind one another
         intensity: 0.48,
         wavelength: 558
     },
@@ -158,7 +159,7 @@ presets['Dispersion'] = [
         id: 3,
         x: 150,
         y: 150,
-        rot: -10,
+        rot: -10.15,
         intensity: 0.39,
         wavelength: 474
     },

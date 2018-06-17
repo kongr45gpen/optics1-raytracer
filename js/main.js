@@ -68,6 +68,8 @@ class Config {
         this.canvasHeight = canvas.scrollHeight;
 
         this.debug = false;
+        this.showLabels = false;
+        this.realisticDispersion = false;
         this.resolution = 4.0;
         this.stepsLo = 1.0;
         this.stepsHi = 5.0;
@@ -145,11 +147,13 @@ const draw = getDraw();
 // Set up dat.gui configuration
 gui.add(conf, 'n', 1.0, 2.0).onChange(draw);
 gui.add(conf, 'debug').onChange(draw);
+gui.add(conf, 'showLabels').onChange(draw);
 let folder = gui.addFolder('Configuration');
 folder.add(conf, 'resolution', 0.0, 10.0).onChange(draw);
 folder.add(conf, 'stepsLo', 0.0, 10.0).onChange(draw);
 folder.add(conf, 'stepsHi', 0.0, 20.0).onChange(draw);
 folder.add(conf, 'maxSteps', 100, 100000).onChange(draw);
+folder.add(conf, 'realisticDispersion').onChange(draw);
 folder.add(conf, 'redraw');
 gui.add(conf, 'addTorch');
 gui.add(conf, 'addMirror');

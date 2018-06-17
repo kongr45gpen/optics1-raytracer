@@ -1,9 +1,6 @@
 import { MirrorCircular } from './mirrorCircular.js'
+import {getCauchyB, getDispersion} from "./utilities";
 
-// Constants for dispersion calculation based on Cauchy's equation
-// Source: https://en.wikipedia.org/wiki/Cauchy%27s_equation
-const AvgWavelength = 580;
-const CauchyC = 0.1 * 1000000; // set to 0.01 for a more realistic value
 
 export class LensCircular extends MirrorCircular {
     constructor() {
@@ -21,7 +18,7 @@ export class LensCircular extends MirrorCircular {
     prepareRayTracingPoints() {
         // Calculate Cauchy's Equation factors
         if (this.dispersion) {
-            this.CauchyB = this.n - CauchyC / Math.pow(AvgWavelength, 2);
+            this.CauchyB = getCauchyB(this.n);
         }
 
         super.prepareRayTracingPoints(); // call parent method
@@ -31,13 +28,7 @@ export class LensCircular extends MirrorCircular {
         // if (Math.abs(incident) < 0.01) return Math.PI / 2.0;
 
         // Calculate refractive index based on Cauchy's Equation, if needed
-        let n;
-        if (this.dispersion) {
-            // n(l) = B + C/(l^2)
-            n = this.CauchyB + CauchyC / Math.pow(wavelength, 2);
-        } else {
-            n = this.n;
-        }
+        let n = (this.dispersion) ? getDispersion(this.CauchyB, wavelength) : this.n;
 
         // Find out if the ray is coming from inside or outside the lens
         const rayInside = Math.cos(incident) < 0;
