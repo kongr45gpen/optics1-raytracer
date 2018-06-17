@@ -56,6 +56,8 @@ body {
     font: 16px/26px Helvetica, Helvetica Neue, Arial;
     background-color: #111;
     color: #aaa;
+
+    position: relative;
 }
 
 select {
@@ -114,7 +116,7 @@ textarea {
 .presets {
     position: absolute;
     left: 0;
-    top: 0;
+    top: -10vh;
 
     margin: 1em;
     width: 15vw;
