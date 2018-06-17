@@ -4,10 +4,9 @@ import {wlToRgb} from './lookup.js'
 
 const depth = 8;
 
-export class Mirror extends Instrument {
+export class Absorber extends Instrument {
     constructor() {
         super(400, 150);
-        this.isMirror = true;
 
         this.size = 100;
 
@@ -16,12 +15,6 @@ export class Mirror extends Instrument {
         ];
     }
 
-    // Make the list of all points in the mirror, which will be used for collision detection and
-    // raytracing later
-    //
-    // TODO: Call this function only when this element changes, not for every redraw
-    // TODO: Make sure mirror front and back do not get confused for the 1 point in the middle
-    //       of the points array
     prepareRayTracingPoints() {
         const angle = this.rot * Math.PI / 180; // angle in radians
 
@@ -31,16 +24,16 @@ export class Mirror extends Instrument {
 
         // Calculate coordinates of the 4 points of the mirror, based on trigonometry
         const startFront = [
-            this.x + this.size / 2.0 * sin - depth / 2.0 * cos,
+            this.x + this.size / 2.0 * sin,
             this.y - this.size / 2.0 * cos - depth / 2.0 * sin];
         const endFront = [
-            this.x - this.size / 2.0 * sin - depth / 2.0 * cos,
+            this.x - this.size / 2.0 * sin,
             this.y + this.size / 2.0 * cos - depth / 2.0 * sin];
         const startBack = [
-            this.x + this.size / 2.0 * sin + depth / 2.0 * cos,
+            this.x + this.size / 2.0 * sin + depth * cos,
             this.y - this.size / 2.0 * cos + depth / 2.0 * sin];
         const endBack = [
-            this.x - this.size / 2.0 * sin + depth / 2.0 * cos,
+            this.x - this.size / 2.0 * sin + depth  * cos,
             this.y + this.size / 2.0 * cos + depth / 2.0 * sin];
 
         let points1 = [];
@@ -69,34 +62,29 @@ export class Mirror extends Instrument {
 
     draw(ctx) {
         // Create gradient
-        let gradient = ctx.createLinearGradient(0.000, 0.000, 15.000, 15.000);
+        let gradient = ctx.createLinearGradient(0.000, -this.size / 2.0, 15.000, this.size / 2.0);
 
         // Add colors
-        gradient.addColorStop(0.000, 'rgba(191, 191, 191, 1.000)');
-        gradient.addColorStop(0.274, 'rgba(178, 178, 178, 1.000)');
-        gradient.addColorStop(0.652, 'rgba(142, 142, 142, 1.000)');
-        gradient.addColorStop(1.000, 'rgba(219, 219, 219, 1.000)');
+        gradient.addColorStop(0.000, 'rgba(111, 111, 111, 1.000)');
+        gradient.addColorStop(0.274, 'rgba(42, 42, 42, 1.000)');
+        gradient.addColorStop(0.652, 'rgba(78, 78, 78, 1.000)');
+        gradient.addColorStop(1.000, 'rgba(19, 19, 19, 1.000)');
         ctx.fillStyle = gradient;
         ctx.translate(this.x, this.y);
         ctx.rotate(this.rot * Math.PI / 180);
-        ctx.fillRect(-depth / 2.0, -this.size / 2.0, depth, this.size);
+        ctx.fillRect(0, -this.size / 2.0, depth, this.size);
+        ctx.strokeStyle = 'rgba(130,130,130,0.8)';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(0, -this.size / 2.0, depth, this.size);
         ctx.setTransform(1, 0, 0, 1, 0, 0);
 
         super.draw(ctx); // Call superclass function
 
-        // ctx.fillStyle = 'rgb(' + 200 * this.intensity + ', 0, 0)';
-        //
-        // let lutValues = wlToRgb[parseInt(this.wavelength) - 380];
-        // ctx.fillStyle = 'rgb(' + lutValues[0] * this.intensity + ',' + lutValues[1] * this.intensity + ',' + lutValues[2] * this.intensity;
-        //
-        // // ctx.fillRect(this.x - 25, this.y - 25, 50, 50);
-        // ctx.translate(this.x - 25 * Math.cos(this.rot / 180 * Math.PI), this.y - 25 * Math.sin(this.rot / 180 * Math.PI));
-        // ctx.rotate(this.rot * Math.PI / 180);
-        // ctx.drawImage(torchImg, -25, -25,50,50);
-        // ctx.setTransform(1, 0, 0, 1, 0, 0);
     }
 
     newAngle(incident) {
-        return Math.PI / 2.0 - incident;
+        return new RayAbsorbed();
     }
 }
+
+export class RayAbsorbed {}

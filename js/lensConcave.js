@@ -21,7 +21,7 @@ export class LensConcave extends Instrument {
         ];
     }
 
-    prepareRayTraycingPoints() {
+    prepareRayTracingPoints() {
         // Calculate Cauchy's Equation factors
         if (this.dispersion) {
             this.CauchyB = this.n - CauchyC / Math.pow(AvgWavelength, 2);
@@ -91,7 +91,7 @@ export class LensConcave extends Instrument {
             if (t >= 4) break;
         }
 
-        super.prepareRayTraycingPoints(); // call parent method
+        super.prepareRayTracingPoints(); // call parent method
     }
 
     newAngle(incident, wavelength) {

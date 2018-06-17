@@ -1,4 +1,5 @@
 import {wlToRgb} from "./lookup";
+import {RayAbsorbed} from "./absorber";
 
 export class Ray {
     constructor(startX, startY, rot, intensity, wavelength = 595) {
@@ -50,9 +51,13 @@ export class Ray {
 
                 // incidentAngle = 180o + rayAngle - objectAngle - 90o
                 let incident = -rot - ang1 + Math.PI / 2.0;
-                let newAngle = object.newAngle(incident, this.wavelength) + ang1;
+                let newAngle = object.newAngle(incident, this.wavelength);
 
-                return -newAngle;
+                if (isFinite(newAngle)) {
+                    return -newAngle - ang1;
+                }
+
+                return newAngle;
             }
         }
 
@@ -60,8 +65,8 @@ export class Ray {
     }
 
     draw(ctx, objects) {
-        ctx.strokeStyle = 'rgba(' + this.colour[0] + ',' + this.colour[1] + ',' + this.colour[2] + ',' + 1.0 + ')';
-        ctx.lineWidth = Math.max(3.5 * this.intensity, 0.2);
+        ctx.strokeStyle = 'rgba(' + this.colour[0] + ',' + this.colour[1] + ',' + this.colour[2] + ',' + (0.2 + 0.8 * this.intensity) + ')';
+        ctx.lineWidth = 0.5 + 3 * this.intensity;
         ctx.beginPath();
         ctx.moveTo(this.x, this.y);
 
@@ -75,13 +80,14 @@ export class Ray {
 
         let self = this;
         const max = conf.maxSteps;
+        let rayAbsorbed = false;
 
         for (let i = 0; i < max; i++) {
             // A list of objects that are close to our ray and should be examined for intersection
             let closeObjects = [];
             if (cooldown === 0) {
-                objects.forEach(function (object) {
-                    if (!object.affectsLight) return; // We don't care about torches
+                objects.every(function (object) {
+                    if (!object.affectsLight) return true; // We don't care about torches
 
                     if (Math.pow(x - object.x, 2) + Math.pow(y - object.y, 2) <= object.maxDistance + 10.0) {
                         // We are close!
@@ -90,20 +96,40 @@ export class Ray {
                         // Find all the points of the object. If we are close enough to one of them,
                         // perform the intersection.
                         let result = self._findCollisions(x, y, rotation, object);
-                        if (result !== null) {
+                        if (result instanceof RayAbsorbed) {
+                            // The ray has been absorbed -- no more points to draw!
+                            rayAbsorbed = true;
+
+                            if (conf.debug) {
+                                // Mark the precise points for debugging, if enabled
+                                ctx.fillStyle = 'rgb(255,0,0)';
+                                ctx.fillRect(x - 3, y - 3, 6, 6);
+                            }
+
+                            return false;
+                        } else if (result !== null) {
                             // Intersection found!
                             rotation = result;
 
                             // Prevent a second collision from occuring, since we are still very
                             // close to the specified object
                             cooldown += 3;
+
+                            // Don't look for more intersections
+                            return false;
                         }
                     }
+
+                    return true;
                 });
             } else {
                 cooldown--;
             }
 
+            if (rayAbsorbed) {
+                // The ray has been absorbed. Don't continue to draw anything.
+                break;
+            }
             if (closeObjects.length !== 0) {
                 // An object is close. Reduce the step for increased precision.
                 x += smallStep * Math.cos(rotation);

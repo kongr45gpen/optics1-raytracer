@@ -18,13 +18,13 @@ export class LensCircular extends MirrorCircular {
         ];
     }
 
-    prepareRayTraycingPoints() {
+    prepareRayTracingPoints() {
         // Calculate Cauchy's Equation factors
         if (this.dispersion) {
             this.CauchyB = this.n - CauchyC / Math.pow(AvgWavelength, 2);
         }
 
-        super.prepareRayTraycingPoints(); // call parent method
+        super.prepareRayTracingPoints(); // call parent method
     }
 
     newAngle(incident, wavelength) {

@@ -19,7 +19,7 @@ export class MirrorCircular extends Instrument {
     // raytracing later
     //
     // TODO: Call this function only when this element changes, not for every redraw
-    prepareRayTraycingPoints() {
+    prepareRayTracingPoints() {
         const angle = this.rot * Math.PI / 180; // angle in radians
 
         // These variables will be needed later
@@ -71,7 +71,7 @@ export class MirrorCircular extends Instrument {
             if (t >= 1) break;
         }
 
-        super.prepareRayTraycingPoints(); // call parent method
+        super.prepareRayTracingPoints(); // call parent method
     }
 
     draw(ctx) {

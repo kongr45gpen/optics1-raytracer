@@ -121,4 +121,38 @@ export function drawLegacy(ctx, conf, torchImg) {
     //     ctx.arc(intersection[0], intersection[1], 3, 0, 2 * Math.PI);
     //     ctx.fill();
     // }
+
+
 }
+
+// function singleLinePrepareRayTraycingPoints() {
+//     const angle = this.rot * Math.PI / 180; // angle in radians
+//
+//     // These variables will be needed later
+//     const sin = Math.sin(angle);
+//     const cos = Math.cos(angle);
+//
+//     // Calculate angles of the 2 absorber points
+//     const start = [
+//         this.x + this.size / 2.0 * sin,
+//         this.y - this.size / 2.0 * cos];
+//     const end = [
+//         this.x - this.size / 2.0 * sin,
+//         this.y + this.size / 2.0 * cos];
+//
+//     // Calculate all points between the starting and ending ones
+//     // point = start + t * (end-start)
+//     for (let t = 0.0; ; t += 1.0 / parseFloat(this.size) / parseFloat(conf.resolution)) {
+//         if (t >= 1) t = 1; // Make sure we don't go off bounds
+//
+//         // point = start + t * (end-start)
+//         this.points.push([
+//             (1 - t) * start[0] + t * end[0],
+//             (1 - t) * start[1] + t * end[1]
+//         ]);
+//
+//         if (t >= 1) break; // t == 1 means we have finished
+//     }
+//
+//     super.prepareRayTraycingPoints(); // call parent method
+// }

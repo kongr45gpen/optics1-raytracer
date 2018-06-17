@@ -9,6 +9,7 @@ import { Mirror } from './mirror.js';
 import { MirrorCircular } from './mirrorCircular.js';
 import { LensCircular } from './lensCircular.js';
 import { LensConcave } from './lensConcave.js';
+import { Absorber } from './absorber.js';
 
 const gui = new dat.GUI();
 
@@ -71,16 +72,14 @@ class Config {
         this.n = 1.0;
 
         this.redraw = function() { draw() };
+        this.reset  = function() { reset(); draw(); };
 
-        this.addTorch = function()
-        {
-            addObject(new Torch(0, 5));
-        };
-
+        this.addTorch = function() { addObject(new Torch()); };
         this.addMirror = function() { addObject(new Mirror()); };
         this.addCircularMirror = function() { addObject(new MirrorCircular()); };
         this.addCircularLens = function() { addObject(new LensCircular()); };
         this.addConcaveLens = function() { addObject(new LensConcave()); };
+        this.addAbsorber = function() { addObject(new Absorber()); };
     }
 }
 let conf = new Config();
@@ -95,7 +94,7 @@ const draw = function() {
     // Prepare and draw all optical instruments
     objects.forEach(function (obj) {
         obj.clear();
-        obj.prepareRayTraycingPoints();
+        obj.prepareRayTracingPoints();
         obj.draw(ctx);
     });
 
@@ -105,23 +104,28 @@ const draw = function() {
             ray.draw(ctx, objects);
         })
     });
+
+    // Store changes in the local storage
+    // TODO: Throttle this function
+    localStorage.setItem('optics1_raytracer.system', exportData());
 };
 
 // Set up dat.gui configuration
 gui.add(conf, 'n', 1.0, 2.0).onChange(draw);
+gui.add(conf, 'debug').onChange(draw);
 let folder = gui.addFolder('Configuration');
-folder.add(conf, 'debug').onChange(draw);
+folder.add(conf, 'reset');
 folder.add(conf, 'resolution', 0.0, 10.0).onChange(draw);
 folder.add(conf, 'stepsLo', 0.0, 10.0).onChange(draw);
 folder.add(conf, 'stepsHi', 0.0, 20.0).onChange(draw);
 folder.add(conf, 'maxSteps', 100, 100000).onChange(draw);
-folder.open();
+folder.add(conf, 'redraw');
 gui.add(conf, 'addTorch');
 gui.add(conf, 'addMirror');
 gui.add(conf, 'addCircularMirror');
 gui.add(conf, 'addCircularLens');
 gui.add(conf, 'addConcaveLens');
-gui.add(conf, 'redraw');
+gui.add(conf, 'addAbsorber');
 
 // Reset function to remove all instruments
 function reset()
@@ -132,18 +136,31 @@ function reset()
     })
 }
 
-// Export functions
-document.getElementById('export').addEventListener('click', function() {
-   let json = JSON.stringify(objects.map(function(object) {
-       return object.export();
-   }), null, 1).replace(/\n/g, ' ');
 
-   document.getElementById('exported-json').innerHTML = json;
+
+// Export functions
+function exportData()
+{
+    return JSON.stringify(objects.map(function(object) {
+        return object.export();
+    }), null, 1).replace(/\n/g, ' ');
+}
+
+document.getElementById('export').addEventListener('click', function() {
+   document.getElementById('exported-json').innerHTML = exportData();
 
    MicroModal.show('modal-1');
 });
 
 // Import functions
+let json = localStorage.getItem('optics1_raytracer.system');
+if (json !== undefined && json !== null) {
+    importData(JSON.parse(json));
+}
+// TODO: Use an actual callback instead of this workaround
+setTimeout(draw, 1000); // redraw after all elements have loaded
+setTimeout(draw, 2000); // 2nd try
+
 document.getElementById('import').addEventListener('click', function() {
     MicroModal.show('modal-2');
 });
@@ -174,6 +191,9 @@ function importData(data) {
                 break;
             case "Torch":
                 object = new Torch();
+                break;
+            case "Absorber":
+                object = new Absorber();
                 break;
         }
 

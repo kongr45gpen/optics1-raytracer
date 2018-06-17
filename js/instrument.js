@@ -48,7 +48,7 @@ export class Instrument {
         return [];
     }
 
-    prepareRayTraycingPoints() {
+    prepareRayTracingPoints() {
         let self = this;
 
         this.points.forEach(function (point) {
