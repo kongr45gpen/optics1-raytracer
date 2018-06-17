@@ -2,6 +2,7 @@ console.log("Welcome to optics1-raytracer");
 
 import dat from 'dat.gui';
 import MicroModal from 'micromodal';
+import debounce from 'debounce';
 
 import { drawLegacy } from './legacy.js';
 import { Torch } from './torch.js';
@@ -88,6 +89,11 @@ window.conf = conf; // Make the variable globally accessible
 let objects = []; // The list of optical instruments
 window.objects = objects;
 
+const performStorage = debounce(function() {
+    console.log("call dbf");
+    localStorage.setItem('optics1_raytracer.system', exportData());
+}, 250);
+
 const draw = function() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -106,8 +112,7 @@ const draw = function() {
     });
 
     // Store changes in the local storage
-    // TODO: Throttle this function
-    localStorage.setItem('optics1_raytracer.system', exportData());
+    performStorage();
 };
 
 // Set up dat.gui configuration
@@ -135,7 +140,6 @@ function reset()
         object.remove();
     })
 }
-
 
 
 // Export functions
@@ -167,7 +171,6 @@ document.getElementById('import').addEventListener('click', function() {
 
 document.getElementById('import-form').addEventListener('submit', function() {
     MicroModal.close('modal-2');
-    console.log(this.elements['import-json'].value);
     importData(JSON.parse(this.elements['import-json'].value));
 });
 

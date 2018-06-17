@@ -6,6 +6,7 @@
   "private": true,
   "dependencies": {
     "dat.gui": "^0.7.2",
+    "debounce": "^1.1.0",
     "micromodal": "^0.3.2",
     "webpack": "^4.8.3",
     "webpack-cli": "^2.1.3"
