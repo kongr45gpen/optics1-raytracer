@@ -8,6 +8,7 @@ const CauchyC = 0.1 * 1000000; // set to 0.01 for a more realistic value
 export class LensCircular extends MirrorCircular {
     constructor() {
         super();
+        this.isMirror = false;
 
         this.n = 1.4;
         this.dispersion = false;

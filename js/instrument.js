@@ -5,6 +5,7 @@ export class Instrument {
     constructor(x, y) {
         this.id = (globalId++);
         this.affectsLight = true;
+        this.isMirror = false;
 
         this.x = x;
         this.y = y;
@@ -22,13 +23,6 @@ export class Instrument {
     }
 
     draw(ctx) {
-        // ctx.fillStyle = 'rgb(200, 0, 0)';
-        // ctx.fillRect(this.x - 25, this.y - 25, 50, 50);
-        // ctx.translate(this.x, this.y);
-        // ctx.rotate(this.rot * Math.PI / 180);
-        // // ctx.drawImage(torchImg, -25, -25,50,50);
-        // ctx.setTransform(1, 0, 0, 1, 0, 0);
-
         if (conf.debug) {
             this.points.forEach(function (point) {
                 // console.log("Found point " + point[0]);
@@ -71,5 +65,20 @@ export class Instrument {
         this.maxDistance = 0;
     }
 
-    // onLoad
+    // TODO: onLoad function for callbacks
+
+    // Get important attributes of this object so they can be used for JSON exports
+    export() {
+        let properties = {
+            type: this.constructor.name,
+            id: this.id
+        };
+        let self = this;
+
+        this.exportedProperties.forEach(function(property) {
+            properties[property] = self[property];
+        });
+
+        return properties;
+    }
 }

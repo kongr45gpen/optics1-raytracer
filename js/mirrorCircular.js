@@ -5,6 +5,7 @@ import {wlToRgb} from './lookup.js'
 export class MirrorCircular extends Instrument {
     constructor() {
         super(300, 150);
+        this.isMirror = true;
 
         this.size = 70;
         this.radius = 120;
@@ -78,10 +79,18 @@ export class MirrorCircular extends Instrument {
         let gradient = ctx.createLinearGradient(this.x - 0.5 * this.size, this.y - 0.5 * this.size, this.x + 0.5 * this.size, this.y + 0.5 * this.size);
 
         // Add colors
-        gradient.addColorStop(0.000, 'rgba(191, 191, 191, 1.000)');
-        gradient.addColorStop(0.274, 'rgba(178, 178, 178, 1.000)');
-        gradient.addColorStop(0.652, 'rgba(142, 142, 142, 1.000)');
-        gradient.addColorStop(1.000, 'rgba(219, 219, 219, 1.000)');
+        if (this.isMirror) {
+            gradient.addColorStop(0.000, 'rgba(191, 191, 191, 1.000)');
+            gradient.addColorStop(0.274, 'rgba(178, 178, 178, 1.000)');
+            gradient.addColorStop(0.652, 'rgba(142, 142, 142, 1.000)');
+            gradient.addColorStop(1.000, 'rgba(219, 219, 219, 1.000)');
+        } else {
+            // Different, darker colours for lenses
+            gradient.addColorStop(0.000, 'rgba(191, 191, 191, 0.800)');
+            gradient.addColorStop(0.274, 'rgba(178, 178, 178, 0.800)');
+            gradient.addColorStop(0.652, 'rgba(142, 142, 142, 0.800)');
+            gradient.addColorStop(1.000, 'rgba(219, 219, 219, 0.800)');
+        }
         ctx.fillStyle = gradient;
 
         // Draw each point of the path

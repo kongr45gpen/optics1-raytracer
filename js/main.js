@@ -7,6 +7,7 @@ import { Torch } from './torch.js';
 import { Mirror } from './mirror.js';
 import { MirrorCircular } from './mirrorCircular.js';
 import { LensCircular } from './lensCircular.js';
+import { LensConcave } from './lensConcave.js';
 
 const gui = new dat.GUI();
 
@@ -56,11 +57,11 @@ window.ctx = ctx;
 
 class Config {
     constructor() {
-        this.canvasSize = 500;
+        this.canvasSize = 700;
         this.canvasWidth = canvas.scrollWidth;
         this.canvasHeight = canvas.scrollHeight;
 
-        this.debug = false;
+        this.debug = true;
         this.resolution = 5.0;
         this.stepsLo = 1.0;
         this.stepsHi = 5.0;
@@ -78,47 +79,34 @@ class Config {
         this.addMirror = function() { addObject(new Mirror()); };
         this.addCircularMirror = function() { addObject(new MirrorCircular()); };
         this.addCircularLens = function() { addObject(new LensCircular()); };
+        this.addConcaveLens = function() { addObject(new LensConcave()); };
     }
 }
 let conf = new Config();
 window.conf = conf; // Make the variable globally accessible
 
-console.log("Working on a " + conf.canvasWidth + "x" + conf.canvasHeight + " canvas");
-
-
-let objects = [];
+let objects = []; // The list of optical instruments
+window.objects = objects;
 
 const draw = function() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    // Prepare and draw all optical instruments
     objects.forEach(function (obj) {
         obj.clear();
         obj.prepareRayTraycingPoints();
         obj.draw(ctx);
     });
 
+    // Draw all rays
     objects.forEach(function (obj) {
         obj.getRays().forEach(function (ray) {
             ray.draw(ctx, objects);
         })
     });
-
-    // drawLegacy(ctx, conf, torchImg);
 };
 
-let torchImg = new Image();
-torchImg.src = 'imgs/torch.svg';
-torchImg.addEventListener('load', draw, false);
-
-
-
-
-// gui.add(conf, 'torchX', 0, 300).onChange(draw);
-// gui.add(conf, 'torchY', 0, 300).onChange(draw);
-// gui.add(conf, 'torchRot', -180, 180).onChange(draw);
-// gui.add(conf, 'mirrorX', 0, 500).onChange(draw);
-// gui.add(conf, 'mirrorY', 0, 500).onChange(draw);
-// gui.add(conf, 'mirrorRot', -180, 180).onChange(draw);
+// Set up dat.gui configuration
 gui.add(conf, 'n', 1.0, 2.0).onChange(draw);
 let folder = gui.addFolder('Configuration');
 folder.add(conf, 'debug').onChange(draw);
@@ -131,6 +119,12 @@ gui.add(conf, 'addTorch');
 gui.add(conf, 'addMirror');
 gui.add(conf, 'addCircularMirror');
 gui.add(conf, 'addCircularLens');
+gui.add(conf, 'addConcaveLens');
 gui.add(conf, 'redraw');
-// gui.remember(conf);
 
+// Export functions
+document.getElementById('export').addEventListener('click', function() {
+   console.log(JSON.stringify(objects.map(function(object) {
+       return object.export();
+   })));
+});
