@@ -12,15 +12,18 @@ const gui = new dat.GUI();
 
 function addObject(object)
 {
+    const id = object.id;
+    const name = object.name;
+
     objects.push(object);
     console.log("Adding object " + object.name);
 
-    let folder = gui.addFolder(object.name);
+    const folder = gui.addFolder(object.name);
     object.exportedProperties.forEach(function(prop) {
         if (prop === 'x' || prop === 'y') {
             folder.add(object, prop, 0, conf.canvasSize).onChange(draw);
         } else if (prop === 'rot') {
-            folder.add(object, prop, 0, 360).onChange(draw);
+            folder.add(object, prop, -180, 180).onChange(draw);
         } else if (prop === 'intensity') {
             folder.add(object, prop, 0.0, 1.0).onChange(draw);
         } else if (prop === 'wavelength') {
@@ -31,21 +34,37 @@ function addObject(object)
             folder.add(object, prop, 0, 200).onChange(draw);
         } else if (prop === 'n') {
             folder.add(object, prop, 0.9, 5.0).onChange(draw);
+        } else {
+            folder.add(object, prop).onChange(draw);
         }
     });
+    object.remove = function() {
+        // Delete the object from the list of objects
+        objects = objects.filter(function(item) { return item.id !== id });
+        draw();
+        gui.removeFolder(folder);
+    };
+    folder.add(object, 'remove');
     folder.open();
 
     draw();
 }
 
+let canvas = document.getElementById('app');
+let ctx = canvas.getContext('2d');
+window.ctx = ctx;
+
 class Config {
     constructor() {
         this.canvasSize = 500;
+        this.canvasWidth = canvas.scrollWidth;
+        this.canvasHeight = canvas.scrollHeight;
 
-        this.debug = true;
+        this.debug = false;
         this.resolution = 5.0;
-        this.stepsLo = 4.0;
-        this.stepsHi = 6.0;
+        this.stepsLo = 1.0;
+        this.stepsHi = 5.0;
+        this.maxSteps = 20000;
 
         this.n = 1.0;
 
@@ -64,9 +83,8 @@ class Config {
 let conf = new Config();
 window.conf = conf; // Make the variable globally accessible
 
-let canvas = document.getElementById('app');
-let ctx = canvas.getContext('2d');
-window.ctx = ctx;
+console.log("Working on a " + conf.canvasWidth + "x" + conf.canvasHeight + " canvas");
+
 
 let objects = [];
 
@@ -106,8 +124,9 @@ let folder = gui.addFolder('Configuration');
 folder.add(conf, 'debug').onChange(draw);
 folder.add(conf, 'resolution', 0.0, 10.0).onChange(draw);
 folder.add(conf, 'stepsLo', 0.0, 10.0).onChange(draw);
-folder.open(gui);
 folder.add(conf, 'stepsHi', 0.0, 20.0).onChange(draw);
+folder.add(conf, 'maxSteps', 100, 100000).onChange(draw);
+folder.open();
 gui.add(conf, 'addTorch');
 gui.add(conf, 'addMirror');
 gui.add(conf, 'addCircularMirror');

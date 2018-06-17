@@ -6,9 +6,9 @@ const depth = 8;
 
 export class Mirror extends Instrument {
     constructor() {
-        super(200, 150);
+        super(400, 150);
 
-        this.size = 50;
+        this.size = 100;
 
         this.exportedProperties = [
             'x', 'y', 'rot', 'size'

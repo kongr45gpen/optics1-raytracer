@@ -50,7 +50,7 @@ export class Ray {
 
                 // incidentAngle = 180o + rayAngle - objectAngle - 90o
                 let incident = -rot - ang1 + Math.PI / 2.0;
-                let newAngle = object.newAngle(incident) + ang1;
+                let newAngle = object.newAngle(incident, this.wavelength) + ang1;
 
                 return -newAngle;
             }
@@ -60,8 +60,8 @@ export class Ray {
     }
 
     draw(ctx, objects) {
-        ctx.strokeStyle = 'rgba(' + this.colour[0] + ',' + this.colour[1] + ',' + this.colour[2] + ',' + this.intensity + ')';
-        ctx.lineWidth = Math.max(3.5 * this.intensity, 1);
+        ctx.strokeStyle = 'rgba(' + this.colour[0] + ',' + this.colour[1] + ',' + this.colour[2] + ',' + 1.0 + ')';
+        ctx.lineWidth = Math.max(3.5 * this.intensity, 0.2);
         ctx.beginPath();
         ctx.moveTo(this.x, this.y);
 
@@ -74,8 +74,9 @@ export class Ray {
         const smallStep = 1 / parseFloat(conf.stepsHi);
 
         let self = this;
+        const max = conf.maxSteps;
 
-        for (let i = 0; i < 1000; i++) {
+        for (let i = 0; i < max; i++) {
             // A list of objects that are close to our ray and should be examined for intersection
             let closeObjects = [];
             if (cooldown === 0) {
@@ -117,6 +118,19 @@ export class Ray {
                 // No objects are close; continue running in a linear trajectory
                 x += step * Math.cos(rotation);
                 y += step * Math.sin(rotation);
+            }
+
+            if (x < 0 || x > conf.canvasWidth || y < 0 || y > conf.canvasHeight) {
+                // Got outside of bounds!
+
+                if (conf.debug) {
+                    // Mark the precise points for debugging, if enabled
+                    ctx.fillStyle = 'rgb(200,0,0)';
+                    ctx.fillRect(x - 8, y - 8, 16, 16);
+                }
+
+                // Don't continue rendering
+                break;
             }
 
             ctx.lineTo(x, y);

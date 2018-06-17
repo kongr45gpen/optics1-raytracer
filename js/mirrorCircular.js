@@ -4,10 +4,10 @@ import {wlToRgb} from './lookup.js'
 
 export class MirrorCircular extends Instrument {
     constructor() {
-        super(200, 150);
+        super(300, 150);
 
-        this.size = 40;
-        this.radius = 60;
+        this.size = 70;
+        this.radius = 120;
 
         this.exportedProperties = [
             'x', 'y', 'rot', 'radius', 'size'
