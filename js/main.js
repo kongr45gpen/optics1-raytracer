@@ -4,7 +4,8 @@ import dat from 'dat.gui';
 import MicroModal from 'micromodal';
 import debounce from 'debounce';
 
-import { drawLegacy } from './legacy.js';
+import { presets } from './presets.js';
+import { Instrument } from './instrument.js';
 import { Torch } from './torch.js';
 import { Mirror } from './mirror.js';
 import { MirrorCircular } from './mirrorCircular.js';
@@ -60,7 +61,7 @@ window.ctx = ctx;
 
 class Config {
     constructor() {
-        this.canvasSize = 700;
+        this.canvasSize = 850;
         this.canvasWidth = canvas.scrollWidth;
         this.canvasHeight = canvas.scrollHeight;
 
@@ -68,7 +69,7 @@ class Config {
         this.resolution = 4.0;
         this.stepsLo = 1.0;
         this.stepsHi = 5.0;
-        this.maxSteps = 20000;
+        this.maxSteps = 9000;
 
         this.n = 1.0;
 
@@ -90,7 +91,6 @@ let objects = []; // The list of optical instruments
 window.objects = objects;
 
 const performStorage = debounce(function() {
-    console.log("call dbf");
     localStorage.setItem('optics1_raytracer.system', exportData());
 }, 250);
 
@@ -119,7 +119,6 @@ const draw = function() {
 gui.add(conf, 'n', 1.0, 2.0).onChange(draw);
 gui.add(conf, 'debug').onChange(draw);
 let folder = gui.addFolder('Configuration');
-folder.add(conf, 'reset');
 folder.add(conf, 'resolution', 0.0, 10.0).onChange(draw);
 folder.add(conf, 'stepsLo', 0.0, 10.0).onChange(draw);
 folder.add(conf, 'stepsHi', 0.0, 20.0).onChange(draw);
@@ -138,8 +137,11 @@ function reset()
     objects.forEach(function(object) {
         // This might be dangerous
         object.remove();
-    })
+    });
+
+    Instrument.reset();
 }
+window.reset = reset;
 
 
 // Export functions
@@ -208,4 +210,21 @@ function importData(data) {
 
         addObject(object);
     });
+}
+
+// Populate list of presets
+const originalButton = document.getElementById('preset-preset');
+console.log(originalButton);
+for (let key in presets) {
+    const configuration = presets[key];
+
+    let button = originalButton.cloneNode(true);
+    button.innerText = key; //.replace( /([A-Z])/g, " $1");
+    button.id = null;
+    button.addEventListener('click', function() {
+        importData(configuration);
+    });
+
+
+    originalButton.parentNode.appendChild(button);
 }

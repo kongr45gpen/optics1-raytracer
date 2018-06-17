@@ -55,6 +55,7 @@ textarea {
 body {
     font: 16px/26px Helvetica, Helvetica Neue, Arial;
     background-color: #111;
+    color: #aaa;
 }
 
 select {
@@ -116,6 +117,15 @@ textarea {
     top: 0;
 
     margin: 1em;
+    width: 15vw;
+}
+
+#preset-preset {
+    display: none;
+}
+
+.ui-button {
+    margin: 0.2em;
 }
 
 /* ==========================================================================

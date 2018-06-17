@@ -81,4 +81,8 @@ export class Instrument {
 
         return properties;
     }
+
+    static reset() {
+        globalId = 1;
+    }
 }

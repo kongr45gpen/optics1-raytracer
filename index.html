@@ -21,15 +21,12 @@
 <![endif]-->
 
 <aside class="presets">
-    <p>
-        <button class="ui-button ui-button-border ui-button-caution ui-button-rounded ui-button-small"
-                id="expsort">Export
-        </button>
-        <button class="ui-button ui-button-border ui-button-caution ui-button-rounded ui-button-small"
-                id="expsort">Export
-        </button>
+    <p id="preset-list">
+        Presets:
+        <a class="ui-button ui-button-border ui-button-action ui-button-rounded ui-button-small"
+                id="preset-preset">Preset
+        </a>
     </p>
-
 
     <p>
         <button class="ui-button ui-button-border ui-button-highlight ui-button-rounded" id="import">
@@ -37,6 +34,12 @@
         </button>
         <button class="ui-button ui-button-border ui-button-highlight ui-button-rounded" id="export">
             Export
+        </button>
+    </p>
+
+    <p>
+        <button class="ui-button ui-button-border ui-button-caution ui-button-rounded" onclick="reset()">
+            Reset
         </button>
     </p>
 </aside>

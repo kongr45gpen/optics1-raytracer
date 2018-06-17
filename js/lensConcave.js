@@ -11,7 +11,7 @@ export class LensConcave extends Instrument {
     constructor() {
         super(300,150);
 
-        this.size = 100;
+        this.size = 70;
         this.radius = 120;
         this.n = 1.4;
         this.dispersion = false;
