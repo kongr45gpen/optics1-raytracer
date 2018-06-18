@@ -1,8 +1,8 @@
-import { MirrorCircular } from './mirrorCircular.js'
+import { InstrumentBiconvex } from './instrumentBiconvex.js'
 import {getCauchyB, getDispersion} from "./utilities";
 
 
-export class LensCircular extends MirrorCircular {
+export class LensCircular extends InstrumentBiconvex {
     constructor() {
         super();
         this.isMirror = false;
