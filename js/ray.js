@@ -162,7 +162,6 @@ export class Ray {
             ctx.lineTo(x, y);
         }
 
-        // ctx.lineTo(this.x + 250 * Math.cos(this.rot), this.y + 250 * Math.sin(this.rot));
         ctx.stroke();
     }
 }

@@ -39,7 +39,7 @@ presets['Simple'] = [
     {
         type: 'Absorber',
         id: 5,
-        x: 400,
+        x: 395,
         y: 420,
         rot: 90,
         size: 100
