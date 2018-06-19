@@ -19,7 +19,6 @@ export class Mirror extends Instrument {
     // Make the list of all points in the mirror, which will be used for collision detection and
     // raytracing later
     //
-    // TODO: Call this function only when this element changes, not for every redraw
     // TODO: Make sure mirror front and back do not get confused for the 1 point in the middle
     //       of the points array
     prepareRayTracingPoints() {
@@ -83,17 +82,6 @@ export class Mirror extends Instrument {
         ctx.setTransform(1, 0, 0, 1, 0, 0);
 
         super.draw(ctx); // Call superclass function
-
-        // ctx.fillStyle = 'rgb(' + 200 * this.intensity + ', 0, 0)';
-        //
-        // let lutValues = wlToRgb[parseInt(this.wavelength) - 380];
-        // ctx.fillStyle = 'rgb(' + lutValues[0] * this.intensity + ',' + lutValues[1] * this.intensity + ',' + lutValues[2] * this.intensity;
-        //
-        // // ctx.fillRect(this.x - 25, this.y - 25, 50, 50);
-        // ctx.translate(this.x - 25 * Math.cos(this.rot / 180 * Math.PI), this.y - 25 * Math.sin(this.rot / 180 * Math.PI));
-        // ctx.rotate(this.rot * Math.PI / 180);
-        // ctx.drawImage(torchImg, -25, -25,50,50);
-        // ctx.setTransform(1, 0, 0, 1, 0, 0);
     }
 
     newAngle(incident) {

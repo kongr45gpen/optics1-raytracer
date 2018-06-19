@@ -328,6 +328,7 @@ class InstrumentBiconvex extends _instrument_js__WEBPACK_IMPORTED_MODULE_0__["In
     constructor() {
         super(300, 150);
 
+        // Default values for some parameters
         this.size = 70;
         this.radius = 120;
 
@@ -1387,7 +1388,6 @@ class Mirror extends _instrument_js__WEBPACK_IMPORTED_MODULE_0__["Instrument"] {
     // Make the list of all points in the mirror, which will be used for collision detection and
     // raytracing later
     //
-    // TODO: Call this function only when this element changes, not for every redraw
     // TODO: Make sure mirror front and back do not get confused for the 1 point in the middle
     //       of the points array
     prepareRayTracingPoints() {
@@ -1451,17 +1451,6 @@ class Mirror extends _instrument_js__WEBPACK_IMPORTED_MODULE_0__["Instrument"] {
         ctx.setTransform(1, 0, 0, 1, 0, 0);
 
         super.draw(ctx); // Call superclass function
-
-        // ctx.fillStyle = 'rgb(' + 200 * this.intensity + ', 0, 0)';
-        //
-        // let lutValues = wlToRgb[parseInt(this.wavelength) - 380];
-        // ctx.fillStyle = 'rgb(' + lutValues[0] * this.intensity + ',' + lutValues[1] * this.intensity + ',' + lutValues[2] * this.intensity;
-        //
-        // // ctx.fillRect(this.x - 25, this.y - 25, 50, 50);
-        // ctx.translate(this.x - 25 * Math.cos(this.rot / 180 * Math.PI), this.y - 25 * Math.sin(this.rot / 180 * Math.PI));
-        // ctx.rotate(this.rot * Math.PI / 180);
-        // ctx.drawImage(torchImg, -25, -25,50,50);
-        // ctx.setTransform(1, 0, 0, 1, 0, 0);
     }
 
     newAngle(incident) {
@@ -2087,9 +2076,10 @@ class Ray {
     _findCollisions(x, y, rot, object) {
         if (object.points.length <= 1) throw new Error("An instrument needs at least 2 points.");
 
+        // Threshold for considering we are close to a point
         const threshold = Math.pow(2 / parseFloat(conf.stepsHi), 2);
 
-        for (let i = 0; i < object.points.length; i++) {
+        for (let i = 0; i < object.points.length; i++) { // for every point of the object...
             let point = object.points[i];
 
             if (Math.pow(x - point[0], 2) + Math.pow(y - point[1], 2) <= threshold) {
@@ -2101,7 +2091,7 @@ class Ray {
                 }
 
                 // Find the angle of incidence
-                // First, we need to find the closest point on the line
+                // First, we need to find the adjacent point of the intersecting point
                 let secondPoint;
                 if (i < object.points.length - 1) {
                     secondPoint = object.points[i + 1];
@@ -2111,17 +2101,17 @@ class Ray {
                     point = object.points[i - 1];
                 }
 
-                // Find the angle of the object line
-                let ang1 = -Math.atan2(secondPoint[1] - point[1], secondPoint[0] - point[0]);
+                // Find the angle of the object's line
+                let ang1 = - Math.atan2(secondPoint[1] - point[1], secondPoint[0] - point[0]);
 
-                // incidentAngle = 180o + rayAngle - objectAngle - 90o
-                let incident = -rot - ang1 + Math.PI / 2.0;
+                let incident = - rot - ang1 + Math.PI / 2.0;
                 let newAngle = object.newAngle(incident, this.wavelength);
 
                 if (isFinite(newAngle)) {
-                    return -newAngle - ang1;
+                    return - newAngle - ang1;
                 }
 
+                // If the angle is not a number (e.g. an instance of RayAbsorbed), return it unchanged
                 return newAngle;
             }
         }
@@ -2130,6 +2120,7 @@ class Ray {
     }
 
     draw(ctx, objects) {
+        // Display parameters of the ray
         ctx.strokeStyle = 'rgba(' + this.colour[0] + ',' + this.colour[1] + ',' + this.colour[2] + ',' + (0.2 + 0.8 * this.intensity) + ')';
         ctx.lineWidth = 0.5 + 3 * this.intensity;
         ctx.beginPath();
@@ -2142,16 +2133,16 @@ class Ray {
 
         const step = 1 / parseFloat(conf.stepsLo);
         const smallStep = 1 / parseFloat(conf.stepsHi);
+        const max = conf.maxSteps;
 
         let self = this;
-        const max = conf.maxSteps;
         let rayAbsorbed = false;
 
         for (let i = 0; i < max; i++) {
             // A list of objects that are close to our ray and should be examined for intersection
             let closeObjects = [];
             if (cooldown === 0) {
-                objects.every(function (object) {
+                objects.every(function (object) { // for each object...
                     if (!object.affectsLight) return true; // We don't care about torches
 
                     if (Math.pow(x - object.x, 2) + Math.pow(y - object.y, 2) <= object.maxDistance + 10.0) {
@@ -2174,7 +2165,7 @@ class Ray {
                             return false;
                         } else if (result !== null) {
                             // Intersection found!
-                            rotation = result;
+                            rotation = result; // Change the orientation of the ray
 
                             // Prevent a second collision from occuring, since we are still very
                             // close to the specified object

@@ -4,6 +4,7 @@ export class InstrumentBiconvex extends Instrument {
     constructor() {
         super(300, 150);
 
+        // Default values for some parameters
         this.size = 70;
         this.radius = 120;
 
