@@ -48,7 +48,7 @@ export class Instrument {
 
         if (conf.showLabels) {
             ctx.font = '20px serif';
-            ctx.fillStyle = 'rgb(255,255,255,0.8)';
+            ctx.fillStyle = 'rgb(5,5,5,0.8)';
             ctx.textBaseline = 'top';
             ctx.textAlign = 'center';
             ctx.fillText(this.name.charAt(0) + this.id, this.x, this.y + this.maxVerticalDistance + 5);

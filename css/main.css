@@ -54,10 +54,14 @@ textarea {
 
 body {
     font: 16px/26px Helvetica, Helvetica Neue, Arial;
-    background-color: #111;
-    color: #aaa;
+    background-color: #fff;
+    color: #111;
 
     position: relative;
+}
+
+canvas {
+    background-color: #eee;
 }
 
 select {
@@ -98,7 +102,7 @@ canvas {
     margin-top: 10vh;
 
     border: 1px solid gray;
-    box-shadow: 0 0 10px 1px rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.2);
 }
 
 

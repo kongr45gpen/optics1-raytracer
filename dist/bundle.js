@@ -240,7 +240,7 @@ class Instrument {
 
         if (conf.showLabels) {
             ctx.font = '20px serif';
-            ctx.fillStyle = 'rgb(255,255,255,0.8)';
+            ctx.fillStyle = 'rgb(5,5,5,0.8)';
             ctx.textBaseline = 'top';
             ctx.textAlign = 'center';
             ctx.fillText(this.name.charAt(0) + this.id, this.x, this.y + this.maxVerticalDistance + 5);
@@ -1440,10 +1440,10 @@ class Mirror extends _instrument_js__WEBPACK_IMPORTED_MODULE_0__["Instrument"] {
         let gradient = ctx.createLinearGradient(0.000, 0.000, 15.000, 15.000);
 
         // Add colors
-        gradient.addColorStop(0.000, 'rgba(191, 191, 191, 1.000)');
-        gradient.addColorStop(0.274, 'rgba(178, 178, 178, 1.000)');
-        gradient.addColorStop(0.652, 'rgba(142, 142, 142, 1.000)');
-        gradient.addColorStop(1.000, 'rgba(219, 219, 219, 1.000)');
+        gradient.addColorStop(0.000, 'rgba(171, 171, 171, 1.000)');
+        gradient.addColorStop(0.274, 'rgba(198, 198, 198, 1.000)');
+        gradient.addColorStop(0.652, 'rgba(212, 212, 212, 1.000)');
+        gradient.addColorStop(1.000, 'rgba(179, 179, 179, 1.000)');
         ctx.fillStyle = gradient;
         ctx.translate(this.x, this.y);
         ctx.rotate(this.rot * Math.PI / 180);
