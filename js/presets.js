@@ -161,7 +161,7 @@ presets['Dispersion'] = [
         y: 150,
         rot: -10.15,
         intensity: 0.39,
-        wavelength: 474
+        wavelength: 485
     },
     {
         type: 'LensCircular',

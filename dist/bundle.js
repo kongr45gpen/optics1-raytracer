@@ -226,7 +226,7 @@ class Instrument {
             // Draw all possible intersection points
             this.points.forEach(function (point) {
                 ctx.beginPath();
-                ctx.arc(point[0], point[1], 3.5, 0, 2 * Math.PI, false);
+                ctx.arc(point[0], point[1], 1.5, 0, 2 * Math.PI, false);
                 ctx.fillStyle = 'rgb(20,215,50)';
                 ctx.fill();
             });
@@ -1672,7 +1672,7 @@ presets['Dispersion'] = [
         y: 150,
         rot: -10.15,
         intensity: 0.39,
-        wavelength: 474
+        wavelength: 485
     },
     {
         type: 'LensCircular',
