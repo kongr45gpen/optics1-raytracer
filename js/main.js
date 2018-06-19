@@ -20,6 +20,7 @@ function addObject(object) {
     const id = object.id;
     const name = object.name;
 
+    console.log("Adding " + object.name);
     objects.push(object);
 
     const folder = gui.addFolder(object.name);
@@ -57,10 +58,13 @@ function addObject(object) {
     drawSlowly();
 }
 
+// Initialise the canvas
 let canvas = document.getElementById('app');
 let ctx = canvas.getContext('2d');
-window.ctx = ctx;
+window.ctx = ctx; // Make the variable globally accessible
 
+// Configuration object; used to store all configuration values of the app, so that they
+// can be used by the instrument classes
 class Config {
     constructor() {
         this.canvasSize = 850;
@@ -100,6 +104,7 @@ window.conf = conf; // Make the variable globally accessible
 let objects = []; // The list of optical instruments
 window.objects = objects;
 
+// Function to store the current optical system to the browser, so it can be recovered later
 const performStorage = debounce(function () {
     localStorage.setItem('optics1_raytracer.system', exportData());
 }, 250);
@@ -172,7 +177,6 @@ function reset() {
 
     Instrument.reset();
 }
-
 window.reset = reset;
 
 

@@ -87,4 +87,5 @@ export class Absorber extends Instrument {
     }
 }
 
+// A class that signifies that the ray should be absorbed
 export class RayAbsorbed {}

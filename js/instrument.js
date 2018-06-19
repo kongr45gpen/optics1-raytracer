@@ -13,8 +13,8 @@ export class Instrument {
 
         // Utility properties
         this.name = this.constructor.name + " #" + this.id;
-        console.log(this.name);
 
+        // List of points used to find intersections with rays
         this.points = [];
 
         // The (squared) distance of the farthest away point of this object;
@@ -23,18 +23,20 @@ export class Instrument {
         this.maxVerticalDistance = 0.0;
     }
 
+    /**
+     * Draw the object in the canvas. This only provides the visual represenation of the object to
+     * the user.
+     *
+     * @param ctx The 2D canvas context
+     */
     draw(ctx) {
         if (conf.debug) {
+            // Draw all possible intersection points
             this.points.forEach(function (point) {
-                // console.log("Found point " + point[0]);
-
                 ctx.beginPath();
-                ctx.arc(point[0], point[1], 1.5, 0, 2 * Math.PI, false);
+                ctx.arc(point[0], point[1], 3.5, 0, 2 * Math.PI, false);
                 ctx.fillStyle = 'rgb(20,215,50)';
                 ctx.fill();
-                // ctx.lineWidth = 5;
-                // ctx.strokeStyle = '#003300';
-                // ctx.stroke();
             });
 
             // Center point
@@ -53,16 +55,22 @@ export class Instrument {
         }
     }
 
+    /**
+     * Get the list of rays that this object produces (useful only for light sources)
+     */
     getRays() {
         return [];
     }
 
+    /**
+     * Find all the points of the surface of this item, and store them in the this.points array
+     */
     prepareRayTracingPoints() {
         let self = this;
 
+        // Find out the largest distance of the farthest away point
         this.points.forEach(function (point) {
-            // Find out the largest distance of the farthest away point
-            let distance = Math.pow(point[0] - self.x, 2) + Math.pow(point[1] - self.y, 2);
+            let distance = Math.pow(point[0] - self.x, 2) + Math.pow(point[1] - self.y, 2); // Euclidean distance
             if (distance > self.maxDistance) {
                 self.maxDistance = distance;
             }
@@ -72,6 +80,9 @@ export class Instrument {
         });
     }
 
+    /**
+     * Clears the calculated points from prepareRayTracingPoints()
+     */
     clear() {
         this.points = [];
         this.maxDistance = 0;
@@ -80,7 +91,9 @@ export class Instrument {
 
     // TODO: onLoad function for callbacks
 
-    // Get important attributes of this object so they can be used for JSON exports
+    /**
+     * Get important attributes of this object so they can be used for JSON exports
+     */
     export() {
         let properties = {
             type: this.constructor.name,
@@ -95,6 +108,9 @@ export class Instrument {
         return properties;
     }
 
+    /**
+     * Resets the ID counter
+     */
     static reset() {
         globalId = 1;
     }

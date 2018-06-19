@@ -144,6 +144,12 @@ export class Ray {
                 // No objects are close; continue running in a linear trajectory
                 x += step * Math.cos(rotation);
                 y += step * Math.sin(rotation);
+
+                if (conf.debug) {
+                    // Mark the precise points for debugging, if enabled
+                    ctx.fillStyle = 'rgb(0,0,50)';
+                    ctx.fillRect(x - 3, y - 3, 6, 6);
+                }
             }
 
             if (x < 0 || x > conf.canvasWidth || y < 0 || y > conf.canvasHeight) {
