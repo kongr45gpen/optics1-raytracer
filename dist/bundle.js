@@ -112,16 +112,16 @@ class Absorber extends _instrument_js__WEBPACK_IMPORTED_MODULE_0__["Instrument"]
         // Calculate coordinates of the 4 points of the mirror, based on trigonometry
         const startFront = [
             this.x + this.size / 2.0 * sin,
-            this.y - this.size / 2.0 * cos - depth / 2.0 * sin];
+            this.y - this.size / 2.0 * cos];
         const endFront = [
             this.x - this.size / 2.0 * sin,
-            this.y + this.size / 2.0 * cos - depth / 2.0 * sin];
+            this.y + this.size / 2.0 * cos];
         const startBack = [
             this.x + this.size / 2.0 * sin + depth * cos,
-            this.y - this.size / 2.0 * cos + depth / 2.0 * sin];
+            this.y - this.size / 2.0 * cos + depth * sin];
         const endBack = [
             this.x - this.size / 2.0 * sin + depth  * cos,
-            this.y + this.size / 2.0 * cos + depth / 2.0 * sin];
+            this.y + this.size / 2.0 * cos + depth  * sin];
 
         let points1 = [];
         let points2 = [];
