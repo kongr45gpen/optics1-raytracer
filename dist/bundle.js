@@ -2101,6 +2101,14 @@ class Ray {
                     point = object.points[i - 1];
                 }
 
+                if (conf.debug) {
+                  // Color the intersecting points of the OBJECT, so we can see which points the algorithm
+                  // considers first
+                  ctx.fillStyle = 'rgb(200,150,50)';
+                  ctx.fillRect(point[0] - 5, point[1] - 3, 10, 6);
+                  ctx.fillRect(secondPoint[0] - 5, secondPoint[1] - 3, 10, 6);
+                }
+
                 // Find the angle of the object's line
                 let ang1 = - Math.atan2(secondPoint[1] - point[1], secondPoint[0] - point[0]);
 
