@@ -7,6 +7,10 @@
 To get Webpack, you will need to install [a recent version of Node.js](https://nodejs.org/en/), and run the command `npm install`
 inside this app's directory. For more information: http://blog.teamtreehouse.com/install-node-js-npm-windows
 
+If you want to make a quick change *without* having to use Webpack, you can just edit the `dist/bundle.js` file, which contains the
+compiled code in a somewhat human-readable format. Just search for `js/index.js` (or the file you are interested in) and edit the 
+contents to your liking.
+
 ### Compiling the code
 To compile all the JS code from `src` into the `dist/bundle.js` file, run the following command:
 ```bash
