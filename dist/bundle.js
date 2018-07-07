@@ -1336,7 +1336,6 @@ function importData(data) {
 
 // Populate list of presets
 const originalButton = document.getElementById('preset-preset');
-console.log(originalButton);
 for (let key in _presets_js__WEBPACK_IMPORTED_MODULE_3__["presets"]) {
     const configuration = _presets_js__WEBPACK_IMPORTED_MODULE_3__["presets"][key];
 
@@ -1350,6 +1349,11 @@ for (let key in _presets_js__WEBPACK_IMPORTED_MODULE_3__["presets"]) {
 
     originalButton.parentNode.appendChild(button);
 }
+
+// Update git information (commit, last update)
+document.getElementById('git-update').innerText = "2018-07-07";
+document.getElementById('git-link').setAttribute('href', 'https://github.com/kongr45gpen/optics1-raytracer/commit/' + "66e4a4378b7b6649963dc4552fdb41e64277f3ab");
+document.getElementById('git-link').innerText = "Show last update date in the footer";
 
 
 /***/ }),

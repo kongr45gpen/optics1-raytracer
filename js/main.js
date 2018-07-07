@@ -251,7 +251,6 @@ function importData(data) {
 
 // Populate list of presets
 const originalButton = document.getElementById('preset-preset');
-console.log(originalButton);
 for (let key in presets) {
     const configuration = presets[key];
 
@@ -265,3 +264,8 @@ for (let key in presets) {
 
     originalButton.parentNode.appendChild(button);
 }
+
+// Update git information (commit, last update)
+document.getElementById('git-update').innerText = GIT_DATE;
+document.getElementById('git-link').setAttribute('href', 'https://github.com/kongr45gpen/optics1-raytracer/commit/' + GIT_COMMIT);
+document.getElementById('git-link').innerText = GIT_SUBJECT;
