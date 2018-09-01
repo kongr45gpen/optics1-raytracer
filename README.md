@@ -30,3 +30,19 @@ node_modules/.bin/webpack --watch
 
 * `index.html`: The main entry point of the webpage
 * `spectrum.c`: A C program to calculate RGB values based on wavelengths, based on http://www.fourmilab.ch/documents/specrend/.
+
+## TODO - Task List
+*optics1-raytracer* is missing a large number of features. In the future, some of the following suggestions can be implemented:
+- Support for different kinds of lens surfaces
+- Performance improvements for faster raytracing
+- Gradual decay of rays
+- Better mobile support & responsiveness
+- Adjustable display resolution
+- Support for drag 'n' drop and in-place object manipulation
+- More styling options (e.g. white background for screenshots)
+- Inclusion of a [quick tutorial](http://introjs.com)
+- Support for multi-colour light sources
+- Addition of presets corresponding to practical & real optical systems (e.g. SLR lenses)
+- Better error reporting (e.g. for a radius smaller than the length)
+- Support for SVG exports
+- Display of partially reflected rays
